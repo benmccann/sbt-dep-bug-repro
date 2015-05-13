@@ -1,0 +1,102 @@
+{
+  "namespace": "com.connectifier.midtier.avro",
+  "protocol": "Midtier",
+  "types": [
+  	{
+  	  "type": "enum",
+  	  "name": "SubpageType",
+  	  "symbols": ["CONNECTIONS", "INCOMING", "WORK_HISTORY", "EDUCATION_HISTORY", "OTHER"]
+  	},
+  	{
+  	  "type": "record",
+  	  "name": "SubpageData",
+  	  "fields": [
+  	  	{"name": "url", "type": "string"},
+  	  	{"name": "compressedContent", "type": "bytes" }
+  	  ]
+  	},
+  	{
+  	  "type": "record",
+  	  "name": "Subpage",
+  	  "fields": [
+  	  	{"name": "type", "type": "SubpageType"},
+  	  	{"name": "contents", "type": { "type": "array", "items": "SubpageData" }}
+  	  ]
+  	},
+    {
+      "type": "record",
+      "name": "SaveCrawlRequest",
+      "fields": [
+        {"name": "url", "type": "string"},
+        {"name": "compressedHtml", "type": "bytes"},
+        {"name": "subpages", "type": ["null", {"type":"array", "items":"Subpage"}]}
+      ]
+    },
+    {
+      "type": "record",
+      "name": "SaveResumeRequest",
+      "fields": [
+        {"name": "url", "type": "string"},
+        {"name": "contentType", "type": "string"},
+        {"name": "compressedContent", "type": "bytes"}]
+    },
+    {
+      "type": "record",
+      "name": "SaveSearchResultsRequest",
+      "fields": [
+        {"name": "query", "type": "string"},
+        {"name": "url", "type": "string"},
+        {"name": "contentType", "type": "string"},
+        {"name": "compressedContent", "type": "bytes"}]
+    },
+    {
+      "type": "record",
+      "name": "SaveImageHashRequest",
+      "fields": [
+        {"name": "url", "type": "string"},
+        {"name": "pHash", "type": "long"},
+        //{"name": "h", "type": "long"},
+        //{"name": "v", "type": "long"},
+        {"name": "modified", "type": ["null","string"]}
+      ]
+    }
+  ],
+  "messages": {
+    "saveCrawl": {
+      "request": [{"name": "request", "type": "SaveCrawlRequest"}],
+      "response": ["null", "boolean"]
+    },
+    "getGmailGplusMapping": {
+      "request": [{"name": "batchSize", "type": "long"}],
+      "response": {"name": "gmailsWithoutGPlus", "type": "array", "items": "string"}
+    },
+    "saveGmailGplusMapping": {
+      "request": [{"name": "gmailGPlusMapping", "type": {"type": "map", "name":"mapping", "values":"string"}}],
+      "response": {"name": "success", "type": "boolean"}
+    },
+    "saveResume": {
+      "request": [
+        {"name": "url", "type": "string"},
+        {"name": "contentType", "type": "string"},
+        {"name": "content", "type": "bytes"}],
+      "response": {"name": "success", "type": "boolean"}
+    },
+    /**
+      * Save a DatedHash for a profile image, if it is different from the last hash calculated.
+      * (Update only the lastFetched date if it is unchanged.)
+      * @return changed indicates whether the hash values are different from the last hash recorded.
+      */
+    "saveImageHash": {
+      "request": [{"name": "request", "type":"SaveImageHashRequest"}],
+      "response": {"name": "changed", "type": "boolean"}
+    },
+    "saveResume": {
+      "request": [{"name": "request", "type": "SaveResumeRequest"}],
+      "response": {"name": "success", "type": "boolean"}
+    },
+    "saveSearchResults": {
+      "request": [{"name": "request", "type": "SaveSearchResultsRequest"}],
+      "response": {"name": "success", "type": "boolean"}
+    }
+  }
+}

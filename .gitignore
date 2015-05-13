@@ -1,0 +1,55 @@
+# Play
+play/logs
+play/RUNNING_PID
+
+# Eclipse
+eclipse
+.project
+.metadata
+local.properties
+.classpath
+.settings
+.loadpath
+
+# Compiled
+.gradle
+.target
+target
+build
+bin
+dist
+*.py[co]
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Temporary
+.cache
+tmp
+*.tmp
+*.bak
+*.swp
+*~.nib
+hs_err_pid*.log
+
+# emacs (and others?) temp files
+*~
+
+# OS X metadata
+.DS_Store
+
+# Avro
+avro/.externalToolBuilders
+avro/.gitignore
+
+# PhantomJS
+phantomjsdriver.log
+
+# IntelliJ
+.idea/
+.idea_modules/
+
+# NetBeans
+.nb-gradle

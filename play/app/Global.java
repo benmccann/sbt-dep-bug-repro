@@ -1,0 +1,1 @@
+public class Global extends play.GlobalSettings {}
